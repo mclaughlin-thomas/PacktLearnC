@@ -1,3 +1,6 @@
+# Chapter 1
+# Running Hello, World!
+
 In this chapter, we will cover the following topics:
 
 • Writing your first C program
