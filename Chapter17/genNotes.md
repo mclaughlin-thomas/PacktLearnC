@@ -228,3 +228,10 @@ A static variable outside any function (i.e., at file scope) keeps its value acr
 
 ## The Lifetime of Static Storage
 
+The lifetimes of both internal and external static memory are the same.
+
+Static memory is allocated when the program is laoded before any statements are executed.
+
+Statis memory is only destroyed when the program completges or exits.
+
+So... The lifetime of static memory is the same as the lifetime of the program.
