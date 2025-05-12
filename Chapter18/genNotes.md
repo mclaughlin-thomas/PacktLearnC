@@ -370,3 +370,48 @@ void      PrintNode(  ListNode* pNode ,void (*printData)(ListData* pData ) );
 void      OutOfStorage( void );
 ```
 
+## Pointers to Functions
+
+When we have to declare a pointer to a function, we need more than just the pointer value!
+
+We need to specify both the return type of the function and the parameter list of the funciton being pointed to...
+
+• The return type of the function; in this case, void.
+
+• The name of the pointer to the function; in this case, (*printData). This indicates that printData is the name pointer to a function; the function itself may have a completely different name. Given the first item, we know that the function returns void.
+
+• The function we'll implement via this pointer to it has a parameter list, in this case, (ListData*pData).
+
+Given these three parts, compare the function pointer declaration to the function's prototype, in this
+
+```
+case, PrintInt():
+void (*printData)(ListData* pData);   // function pointer
+void PrintInt(    ListData* pData);   // function prototype
+void PrintInt(    ListData* pData)  { // function definition
+  ...
+}
+```
+
+## A Program to Test Our Linked List Structure
+
+## Summary
+"
+• Doubly-linked list: A linked list that contains not only a single pointer to the next list node, but also another pointer that points to the preceding list node. The list may be traversed easily from front to back, as well as from back to front.
+
+• Stack: A linked list where each list node is added only to the front of the list (pushed onto the stack). Subsequently, each list node is only removed from the front of the list (popped off the stack). This is also known as a Last In First Out (LIFO) list.
+
+• Queue: A linked list where each list node is added only to the back of the list (enqueued). Subsequently, each list node is only removed from the front of the list (dequeued). This is also known as a First In First Out (FIFO) list.
+
+• Deque: A generalized list that combines the properties of both a stack and a queue. Elements can be added or removed from anywhere in the list. Our implementation of a linked list is very close to that of a deque.
+
+• Priority queue: A list where each list node also has a given priority. List nodes are added to the list in order of priority and removed from the list according to a priority scheduling scheme.
+
+• Set: A collection of unique elements, in no particular order. Sometimes, they are implemented using other dynamic data structures, such as trees or hash tables.
+
+• Map: A collection of key-value pairs, where the key is unique and is used to look up a value associated with that key. This can also be called an associative array, symbol table, or dictionary. 
+
+• Tree: A tree simulates a hierarchical tree structure, with a single root node from which child nodes form branches. Like branches in a real tree, child nodes can only contain subchildren and cannot be linked to other branches.
+
+• Graph: A collection of nodes connected via links. A graph is more of a general form of a tree in that it may have cycles (where a node from one branch may link to the root or a node in another branch). 
+"
