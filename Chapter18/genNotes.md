@@ -296,4 +296,77 @@ In the second group of statements, an array of five pointers to Card is allocate
 
 ## The Linked List Dynamic Data Structre
 
-x
+[linked list image]
+
+create linklisttester.c
+
+## Linked List Structures
+
+We need two structures for the linked list in the image.
+
+A linked list header structure and a list node structure.
+
+```
+#include <stdio.h>
+#include <stdbool.h>
+
+typedef int  ListData;
+
+//typedef struct _Node ListNode;
+typedef struct _Node {
+  ListNode*  pNext;
+  ListData*  pData;
+} ListNode;
+
+typedef struct {
+  ListNode*  pFirstNode;
+  int        nodeCount;
+} LinkedList;
+
+int main( void )  {
+    //cc
+  
+    return 0;
+}
+```
+
+## Declaring Operations on a Linked List
+
+1. Create a new LinkedList header that allocates and properly initializes the header record.
+
+2. Create a new ListNode element that allocates and properly initializes the node element. Once created, the node still isn't part of the list.
+
+3. Delete a node. This doesn't involve the list; typically, this will be done after a node is removed from the list.
+
+4. Insert a node either into the front or back of the list.
+
+5. Remove a node, either from the front or back of the list, and return that node to the caller.
+
+6. Get the node from either the front or back of the list; this only observes the node data – it does not change the list in any way.
+
+7. Determine whether the list is empty.
+
+8. Determine the size of the list.
+
+9. Print the list. This involves traversing the list and printing each node.
+
+10. Print an individual node. This involves printing the ListData element of the node. The function to print ListData needs to be specific to the type of ListData. We will need a way to pass a print function as a parameter to this operation.
+
+so we need these prototypes
+
+```
+LinkedList* CreateLinkedList();
+bool      IsEmpty(    LinkedList* pList );
+int       Size(       LinkedList* pList );
+void      InsertNodeToFront(   LinkedList* pList , ListNode* pNode );
+void      InsertNodeToBack(    LinkedList* pList , ListNode* pNode );
+ListNode* RemoveNodeFromFront( LinkedList* pList );
+ListNode* RemoveNodeFromBack(  LinkedList* pList );
+ListNode* GetNode(             LinkedList* pList , int pos );
+ListNode* CreateNode( ListData* pData );
+void      DeleteNode( ListNode* pNode );
+void      PrintList(  LinkedList* pList , void (*printData)(ListData* pData ) );
+void      PrintNode(  ListNode* pNode ,void (*printData)(ListData* pData ) );
+void      OutOfStorage( void );
+```
+
