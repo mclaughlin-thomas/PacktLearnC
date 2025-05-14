@@ -70,3 +70,12 @@ The program name itself is always placed in argv[0]. So... argc will ALWAYS be a
 Each argument we pass via the command line is separated by whitespace. We can make a single argument of several space separated words by enclosing the group of words in either 'words words ' or "words words".
 
 ## Simple Use of argc and argv
+
+code example, showArgs.c
+
+There is also one Standard Library Routine, getopt() and one GNU C Library function, getopt_long() that is intended to simplify command-line option processing.
+
+"The older getopt() routine, declared in unistd.h, expects single-character options. The newer and preferred getopt_ long() routine is declared in getopt.h; it can process both single-character options as well as whole-word option specifiers. The getopt_long() function is system-dependent, and there are subtle differences in the way it is implemented for GNU C versus POSIX and other system libraries. "
+
+To get a flavor of getopt() and how it makes argument processing somewhat simpler, although not completely so, lets explore the following very simple program using getopt():
+
