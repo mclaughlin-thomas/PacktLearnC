@@ -167,3 +167,139 @@ In this program, instead of ignoring the result returned from scanf(), we captur
 
 ## Reading String and Character Input with scanf
 
+One way to read a string is to use scanf with the %s specifier.
+
+The %s specifier assigns a sequence of nonwhitespace characters to the given array.
+
+As with numbers, leading whitespace is skipped.
+
+Whitespace can be space, \t, \n, \r, \f or \v
+
+Conversion stops on the first occurence of whitespace after one or more instances of nonwhitespace or at the maximum field width, if specified.
+
+Otherwise, the array to which the input string is assigned must be large enough to hold the string plus the terminating NULL character.
+
+readString.c
+
+-------------------
+In the previous program all characters up to the first space character or whitespace are read in.
+
+The next program can read a character in and also use whitespace between input values.
+
+The following program will read a character without whitespace and with whitespace in the format specifier.
+
+readChar.c
+
+## Using Internal Data Conversion
+
+It should be fairly obvious that the ability of printf to convert binary values into strings and of scanf to convert strings into binary values is very powerful.
+
+## Using sscanf and sprintf to Convert Values Into and From Strings
+
+When using sscanf to interpret a string buffer into values, the string buffer is already known or has been allocated elsewhere.
+
+sscanf converts the string into the desired values assigning them to variables. The sizes of these variables are known by their data type.
+
+On the other hand, when using sprintf to convert into characters, the final output buffer size required is rarely known.
+
+"We can either exercise great care to allocate a specific array size or, more commonly, we can simply allocate an array that is reasonably larger than expected, ignoring any unused or even unneeded buffer space."
+
+internalFormatting.c
+
+"Apart from the use of I/O buffers (character arrays), this program is nearly identical to read2NumbersUsingResult.c, which we created at the beginning of this chapter. Instead of reading 1234 and 5678.9012 from the input stream, these values are now found in the sIn[] array buffer. Instead of writing to stdout, values are output to the sOut[] array buffer, whose size is a generous 80 characters, or about the length of a standard console line. Remember that sOut[] can hold a string of up to 79 characters, with the 80th character being the required NULL character. "
+
+"This program introduces the puts() function, which is a simplified version of printf(). puts() simply prints the given string to stdout and is the equivalent of printf( "%s\n" ). The input counterpart to puts() is gets(), which we will encounter a little later in this chapter."
+
+"We can see that sscanf() was able to convert and correctly assign two values. We can also see that sprintf() formatted those values into a string of 33 characters. Note that this count of 33 characters does not include the NULL character"
+
+## Converting Strings Into Numbers With atoi and atod
+
+We don't always need the specificity or flexibility that the strto<type>() functions provide. The following program demonstrates the conversion of strings into an integer and double:
+
+```
+#include <stdio.h>
+#include <stdlib.h>
+int main( void )  {
+  int     anInteger   = -1;
+  double  aDouble     = -1.0;
+  
+  char sInteger[] = "1234" ;
+  char sDouble[]  = "5678.9012";
+  
+  printf( "As strings: integer=\"%s\" double=\"%s\"\n" ,
+          sInteger , sDouble );
+  anInteger = atoi( sInteger );
+  aDouble   = atof( sDouble );
+  printf( "As values: integer=[%d] double=[%lf]\n\n" ,
+           anInteger , aDouble );
+  return 0;
+}
+```
+
+## Exploring Unformatted I/O
+
+Not every string input needs to be converted into some binary value. Often we simply need to read or write strings w/o any additional formatting....
+
+
+## Getting the String I/O To/From the Console
+
+To read and write a line of text there are puts and gets console functions and their stream equivalents fputs and fgets
+
+The puts and fputs functions write the given string ot the output stream or file adding newline to the end!
+
+gets and fgets read from the input stream or file until eof or newline is encountered.
+
+The newline character, if encountered is retained by fgets but gets discards newline.
+
+With gets, no limit for the number of chracters to be read can be specified.
+
+On the other hand, fgets must be given the max number of chracters to read, it will read up to that limit until eof or newline is encountered.
+
+## Using the Simple I/O of Strings With gets and puts
+
+readString2.c
+
+gets has no bounds checking and can cause buffer overflow, and is deprecated in C99 and removed in C11
+
+Use fgets instead of gets.
+
+scanf can read formatted input like integers strings, etc.
+
+issues with scanf: stops at space or newline, so "John Smith" becomes "Johh"
+
+errors with gets in C11...
+
+## Understanding Why Using gets can be dangerous
+
+Big difference between gets and fgets.
+
+The following function prototypes for these two functions highlight their differences:
+
+```
+char*  gets( char* str );
+char* fgets( char* str , int size , FILE* stream );
+```
+
+"From this, we see that gets() requires no limits on how many characters it reads; therefore, gets() has the potential to read an infinite amount of input. On the other hand, fgets() must be given a maximum number of characters to be read in the size parameter. fgets() will read up to size-1 characters unless EOF or <newline> is encountered. Specifying a maximum size for processing is known as a bounds-checking interface. The total size of the data to be processed by such a function is bound by the given size. "
+
+"Because there are no limits on the length of the string to gets(), it has the potential to read beyond the size of the string buffer. If this happens, in a best-case scenario, mayhem will ensue and the program will crash. In a worst-case scenario, malicious input could be devised such that the program does not crash and causes control to extend beyond the program. This is called a buffer overrun and is a big security risk, which is why gets() is unsafe."
+
+"One solution is to completely replace any gets() function with the safe_gets() wrapper function. Another solution is to write a custom function that performs one or more actions appropriate to the current need. We will do this in the following section."
+
+## Summary
+
+We went over how a stream is a flow of bytes from a source to a destination.
+
+For the console, the streams are the pre-defined stdin, stdout, and stderr variables.
+
+After we went over streams, we went into input stream format specifiers.
+
+All of the examples we went over that talked about input stream format specifiers expanded our abililty to convert various forms of input data streams.
+
+We also went into methods of internal formatted data conversion.
+
+These involved sscanf, ssprint, atoi, atof
+
+Then, we went over unformatted IO with fputs and fgets, as these were demonstrated in nameSorter.c
+
+"In the next chapter, we will expand our knowledge of file streams. We will see how they are similar to stdin, stdout, and stderr, but we will also see why we need to learn how to create, open, read, write, and perform other manipulations that are unique to files."
