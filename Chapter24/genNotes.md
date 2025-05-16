@@ -161,3 +161,158 @@ __This method ensures that a header file will always only be included once__. To
 
 ## Debugging With the Preprocessor
 
+So, we have seen two instances of using the preprocessor effectively: for #include files and limiting redundant processing of #include files. The last simple and effective use for the preprocessor is as a tool for debugging large and/or complex programs of multiple files.
+
+Using conditional directives, we can easily control what source code is inserted into the source file or excluded from the source file. Consider the following directives:
+
+```
+...
+#if TEST_CODE
+   // code to be inserted and executed in final program
+   fprintf( stderr, "This is a test. We got here.\n" );
+#endif
+...
+```
+
+If the TEST_CODE macros is defined and has a nonzero value, the statements within the #if and #endif directives will be included in the source file. For this code to be included, we can dfine the macro in a couple of ways. First it can be defined in the main source file with the following code:
+
+```
+#define TEST_CODE 1
+```
+
+This statement defines that the TEST_CODE macros must have a value of 1 (nonzero implies true).  If we wanted to turn off the test code but keep the macros in place we would change that line to this:
+
+```
+#define TEST_CODE 0
+```
+
+Alternate way!!!
+
+Instead we can define the macro on the command line for compilation as follows:
+
+cc myProgram.c -o myProgram -Wall -Werror -std=c11 __-D TEST_CODE=1__
+
+-D option defines the TEST_CODE macro and gives it the value 1.
+
+When I have to test a wide variety of features in a very complex program, I use a set of macros, such as the following:
+
+```
+#if defined DEBUG
+ #define DEBUG_LOG 1
+ #define DEBUG_LOG_ALIGN 0
+ #define DEBUG_LOG_SHADOW 0
+ #define DEBUG_LOG_WINDOW 0
+ #define DEBUG_LOG_KEEPONTOP 1
+ #define DEBUG_LOG_TIME 1
+#else
+ #define DEBUG_LOG 0
+ #define DEBUG_LOG_ALIGN 0
+ #define DEBUG_LOG_SHADOW 0
+ #define DEBUG_LOG_WINDOW 0
+ #define DEBUG_LOG_KEEPONTOP 1
+ #define DEBUG_LOG_TIME 0
+#endif
+```
+
+This set of macro definitions existed alone in a header file. Then, I could turn a whole set of debugging macro symbols on or off via the command line by simply adding -D DEBUG to the command-line options. Sprinkled throughout this program, which consisted of over 10,000 lines of code in approximately 230 files, were #if defined DEBUG_LOG_xxx ... #endif directives with a few lines of code to provide logging as the program was executing. I've found this rudimentary method, sometimes called __caveman debugging__, to be effective. 
+
+A similar mechanism can be used to insert one set of statements or another set of statements into the source file. Consider the following directives:
+
+```
+...
+#if defined TEST_PROGRAM
+   // code used to test parts of program
+   ...
+#else
+   // code used for the final version of the program (non-testing)
+   ..
+#endif
+```
+
+Any further discussion of debugging is beyond the scope of this book.
+
+We now have four effective yet simple uses for the preprocessor, as follows:
+
+• To include header files
+
+• To limit redundant processing of header files
+
+• For caveman debugging
+
+• To exclude a set of statements with #if 0 ... #endif when we are experimenting with our program
+
+## Building a Multi-File Program
+
+In all of our single-file programs, we used the following command line to build them:
+
+```
+cc <sourcefile>.c -o <sourcefile> -Wall -Werror -std=c17
+```
+
+In the two-file program from Chapter 23, Using File Input and File Output, we used the following command line to build it:
+
+```
+cc <sourcefile_1>.c <sourcefile_2>.c -o <programname> <additional options>
+```
+
+The compiler command line can take multiple source files and compile them into a single executable. In this program, we have four source files, so to compile this program, we need to put each source file on the command line, as follows:
+
+```
+cc card.c hand.c deck.c dealer.c -o dealer <additional options>
+```
+
+The order of the list of source files does not matter. The compiler will use the results of the compilation of each file and build them into a single executable named dealer..
+
+```
+gcc dealer.c card.c hand.c deck.c -o dealer -Wall -Werror -std=c17
+
+
+-----------
+Example header file and source file
+
+```
+// deck.h
+#ifndef _DECK_H_
+#define _DECK_H_
+#include "card.h"
+enum {
+  kCardsInDeck = 52
+};
+typedef struct  {
+  Card  ordered[  kCardsInDeck ];
+Creating a multi-file program 581
+  Card* shuffled[ kCardsInDeck ];
+  int   numDealt;
+  bool  bIsShuffled;
+} Deck;
+void  InitializeDeck(   Deck* pDeck );
+void  ShuffleDeck(      Deck* pDeck );
+Card* DealCardFromDeck( Deck* pDeck );
+void  PrintDeck(        Deck* pDeck );
+#endif 
+```
+
+Example source file
+
+```
+// deck.c
+#include "dealer.h"
+bool bRandomize = true;  // default if not set elsewhere
+
+void InitializeDeck(   Deck* pDeck )  {
+  // function body here
+  ...
+ }
+void ShuffleDeck(      Deck* pDeck )  {
+ // function body here
+  ...
+}
+Card* DealCardFromDeck( Deck* pDeck )  {
+ // function body here
+  ...
+}
+void PrintDeck(        Deck* pDeck )  {
+ // function body here
+  ...
+}
+```
