@@ -1,0 +1,5 @@
+CC      = gcc
+CCFLAGS = -Wall -Werror -std=c17
+
+dealer: card.c hand.c deck.c dealer.c
+	$(CC) card.c hand.c deck.c dealer.c -o dealer $(CCFLAGS)

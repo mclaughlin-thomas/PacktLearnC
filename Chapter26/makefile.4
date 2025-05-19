@@ -1,0 +1,7 @@
+CC      = gcc
+CCFLAGS = -Wall -Werror -std=c17
+SRCS    = card.c hand.c deck.c dealer.c
+INCS    = card.h hand.h deck.h
+
+dealer: $(SRCS) $(INCLS)
+	$(CC) -o $@ $(SRCS) $(CCFLAGS)
